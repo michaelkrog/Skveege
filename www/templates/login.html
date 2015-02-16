@@ -1,0 +1,24 @@
+<ion-view class="view-login">
+    <ion-content class="calm-bg" padding="true">
+
+        <div class="card">
+            <label class="item item-input">
+                <input type="text" placeholder="Brugernavn" ng-model="user.username">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="Kodeord" ng-model="user.password">
+            </label>
+        </div>
+
+        <div class="row">
+            <div class="col col-50 col-offset-25">
+                <img ng-src="img/logo-skveege_256.png" ng-class="{'circle-blink':mode==='login','circle-glow':mode==='idle'}" width="100%" ng-click="signIn(user)">
+            </div>
+        </div>
+    </ion-content>
+    <div class="bar bar-footer bar-calm">
+        <p class="text-center titl">
+            <a href="#/forgot-password" class="light">Glemt kodeord?</a>
+        </p>
+    </div>
+</ion-view>

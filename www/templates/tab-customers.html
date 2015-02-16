@@ -1,0 +1,19 @@
+<ion-view>
+    <ion-nav-buttons side="left">
+        <button class="button button-clear" ng-click="toggleEditable()">
+            Redigér
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-icon ion-ios7-plus-empty" ng-click="addCustomer()"></button>
+    </ion-nav-buttons>
+  <ion-content>
+    <ion-list show-delete="editable">
+      <ion-item ng-repeat="contact in contacts | orderBy:'firstName'" type="item-text-wrap" href="#/tab/customers/{{contact.id}}">
+        <ion-delete-button class="ion-minus-circled" ng-click="deleteCustomer(customer)"></ion-delete-button>
+        <h2>{{contact.name}}</h2>
+        <p>{{contact.address}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

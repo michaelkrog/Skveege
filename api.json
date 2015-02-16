@@ -1,0 +1,397 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Skveege",
+        "description": "An API for Skveege. All requests mentioned requires authentication unless stated otherwise.",
+        "contact": {
+            "name": "Skveege Developer Team",
+            "url": "http://developer.skveege.com"
+        }
+    },
+    "host": "api.skveege.com",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/organizations": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/organizations/$id": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+            ,
+            "delete": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/users": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/users/$id": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+            ,
+            "delete": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/invoices": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/invoices/$id": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+            ,
+            "delete": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/payments": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/payments/$id": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+            ,
+            "delete": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/contacts": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/contacts/$id": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+            ,
+            "delete": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/agreements": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/agreements/$id": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+            ,
+            "delete": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/routes": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        },
+        "/routes/$id": {
+            "get": {
+                "summary": "Retrieves all domains accessible by current user.",
+                "responses": {
+                    "200": {
+                        "description": "domain list response"
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+            ,
+            "delete": {
+                "summary": "Creates a new domain",
+                "responses": {
+                    "200": {
+                        "description": "The newly created domain"
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+
