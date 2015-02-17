@@ -1,0 +1,86 @@
+<ion-view view-title="Kørebog">
+    <ion-content ng-class="{'stable-bg':logbook === null}">
+        <div class="list" ng-if="logbook !== null">
+            Speed: {{currentTrip.location.coords.speed}}<br>
+            Moving: {{currentTrip.isMoving}}<br>
+            Parked: {{currentTrip.isParked}}<br>
+            Station.: {{currentTrip.stationaryLocation}}<br>
+            isAq.Stat: {{currentTrip.isAcquiringStationaryLocation}}<br>
+            Last move: {{currentTrip.lastMove}} <br>
+            
+            
+            <div class="item item-icon-right energized-bg ">
+                <h2><span class="license-plate">{{logbook.registration}}</span></h2>
+                <p>{{logbook.vehicle}}, 22.034 km </p>
+                <i class="icon ion-ios7-arrow-right"></i>
+            </div>
+            <div class="item item-toggle">
+                <label class="toggle toggle-dark">
+                    <input type="checkbox" ng-model="logbook.$active" ng-true-value="true" ng-false-value="false">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+                <h2>Aktiv</h2>
+            </div>
+            <div ng-if="logbook.$active" class="slide-down">
+                <div class="item item-divider">
+                    Nuværende akivitet
+                </div>
+                <div class="item">
+                    <span class="item-note">{{getLengthOfCurrentTrip() | number : 1}}km</span>
+                    <h2>Kører</h2>
+                    <p>Fra Bornholmsgade 57, 9000 Aalborg</p>
+
+                </div>
+                <div class="item item-toggle">
+                    <label class="toggle toggle-dark">
+                        <input type="checkbox" ng-model="currentTrip.business" ng-true-value="true" ng-false-value="false">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                    <h2>Erhvervskørsel</h2>
+                </div>
+            </div>
+
+
+            <div class="item item-divider">
+                Historik
+            </div>
+            <div class="item item-icon-right">
+                <i class="icon ion-ios7-arrow-right"></i>
+                <h2>Sidste tur</h2>
+                <p>Danalien, Aalborg – Bornholmsgade, Aalborg</p>
+            </div>
+            <div class="item">
+                <h2>Erhvervskørsel i dag</h2>
+                <p>
+                    24,9 km
+                </p>
+            </div>
+            <div class="item">
+                <h2>Erhvervskørsel i år</h2>
+                <p>
+                    24,9 km
+                </p>
+            </div>
+            <div class="item item-icon-right">
+                <i class="icon ion-ios7-arrow-right"></i>
+                Detaljeret oversigt
+            </div>
+
+        </div>
+
+        <div class="row padding margin-top" ng-if="logbook === null && state !== 'loading'">
+            <div class="col col-80 col-offset-10 padding-vertical" style="text-align: center">
+                <div class="padding-vertical">
+                    <p><strong>Du har endnu ingen kørebøger oprettet.</strong></p>
+                    <p>Du skal oprette mindst én kørebog. Hver kørebog er tilknyttet ét specifikt køretøj.</p>
+                </div>
+                <button class="button button-block button-calm" ng-click="addLogbook()">Opret kørebog</button>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

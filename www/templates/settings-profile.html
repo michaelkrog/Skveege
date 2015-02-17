@@ -1,0 +1,25 @@
+<form name="userForm" novalidate>
+    <ion-view>
+        <ion-nav-buttons side="right" >
+            <button class="button button-clear" ng-click="ok(userForm)">OK</button>
+        </ion-nav-buttons>
+        <ion-content has-header="true">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Navn</span>
+                <input type="text" placeholder="Dit navn" ng-value="user.name" required ng-pattern="/[a-zA-Z0-9]{2}/">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Telefonnummer</span>
+                <input type="tel" placeholder="+45" ng-value="user.phone">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input type="email" placeholder="Din emailadresse" ng-value="user.email">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Adresse</span>
+                <input type="address" placeholder="F.eks.: Ågade 1, 4000 Roskilde" ng-value="user.address">
+            </label>
+        </ion-content>
+    </ion-view>
+</form>

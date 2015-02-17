@@ -5,10 +5,52 @@
   font-style: normal;
 }
 
+
+@font-face {
+  font-family: 'FiraMono';
+  src: url('../fonts/FiraMono.eot?#iefix') format('embedded-opentype'),  url('../fonts/FiraMono.woff') format('woff'), url('../fonts/FiraMono.ttf')  format('truetype'), url('../fonts/FiraMono.svg#FiraMono') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.slide-down {
+    -webkit-transition:0.5s ease all;
+  -moz-transition:0.5s ease all;
+  -o-transition:0.5s ease all;
+  transition:0.5s ease all;
+  max-height: 200px;
+}
+
+.slide-down.ng-enter {
+  max-height: 0px;
+}
+
+.slide-down.ng-leave.ng-leave-active {
+  max-height: 0px;
+}
+
+.slide-down.ng-enter.ng-enter-active {
+  max-height: 200px;
+}
+
+.slide-down.ng-leave {
+  max-height: 200px;
+}
+
+
 .title { 
     font-family: 'Lobster-Regular' !important; 
     font-size: 24px !important; 
     text-shadow: 0px 1px 2px #3f3f3f;
+}
+
+.license-plate {
+    font-family: 'FiraMono' !important; 
+    text-transform: uppercase;
+}
+
+h2 > span.license-plate {
+    font-size: 30px;
 }
 
 .view-login .card {

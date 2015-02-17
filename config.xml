@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.skveege574401" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>skveege</name>
+  <name>Skveege</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Farvel papir; Goddag overblik! Skveege planlægger og fakturerer for vinduespudsere
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="info@skveege.com" href="http://skveege.com/">
+      Skveege Team
     </author>
   <content src="index.html"/>
   <access origin="*"/>

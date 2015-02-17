@@ -25,18 +25,18 @@ function Repository(queryFilter) {
         query: function (data) {
             return angular.copy(queryFilter ? queryFilter(entities, data) : entities);
         },
-        save: function (organization) {
-            organization = angular.copy(organization);
-            if (organization.id) {
-                var index = indexFromId(entities, organization.id);
+        save: function (entity) {
+            entity = angular.copy(entity);
+            if (entity.id) {
+                var index = indexFromId(entities, entity.id);
                 if (index >= 0) {
-                    entities[index] = organization;
+                    entities[index] = entity;
                 }
             } else {
-                organization.id = newId();
-                entities.push(organization);
+                entity.id = newId();
+                entities.push(entity);
             }
-            return angular.copy(organization);
+            return angular.copy(entity);
         },
         delete: function(id) {
             var index = indexFromId(entities, id);
@@ -61,13 +61,13 @@ var OrgEntityFilter = function(entities, data) {
     return result;
 };
 
-var AgreementFilter = function(entities, data) {
+var LogbookEntryFilter = function(entities, data) {
     var result = [];
-    var organizationId = data.organizationId;
+    var logBookId = data.logBookId;
     
-    if(organizationId) {
+    if(logBookId) {
         angular.forEach(entities, function(entity) {
-            if(entity.organizationId === organizationId) {
+            if(entity.logBookId === logBookId) {
                 result.push(entity);
             }
         });
@@ -80,69 +80,18 @@ angular.module('skveege.mock', ['ngMockE2E'])
         //Mock run
         .run(function ($httpBackend) {
             var orgRepo = Repository();
-            var personRepo = Repository(OrgEntityFilter);
-            var eventRepo = Repository(OrgEntityFilter);
-            var invoiceRepo = Repository(OrgEntityFilter);
+            var personRepo = Repository();
             var contactRepo = Repository(OrgEntityFilter);
-            var accountRepo = Repository(OrgEntityFilter);
-            var paymentRepo = Repository(OrgEntityFilter);
-            var intervalAgreementRepo = Repository(AgreementFilter);
-            var routeRepo = Repository(OrgEntityFilter);
-            var productRepo = Repository(OrgEntityFilter);
-    
-            var org = orgRepo.save({name:'Apaq',url:'http://apaq.dk', address:'Bornholmsgade 57, 9000 Aalborg', countryCode: 'DK', phone:'+4593100718', email:'info@apaq.dk', companyNo: '12345678', terminated:false, terminationTime: null, emailValidated: true})
-            var person = personRepo.save({name: 'Michael Krog', address: 'Bornholmsgade 57, 9000 Aalborg', countryCode: 'DK', phone:'+4593100718', email:'mic@apaq.dk', archived: false, username:'michael.krog', role:'user', emailValidated: true});
-            var route1 = routeRepo.save({organizationId: org.id, name:'Nørresundby', averageIntervalTotal:2304.96, averageMonthlyTotal:4994.08});
-            var route2 = routeRepo.save({organizationId: org.id, name:'Hjørring', averageIntervalTotal:2304.96, averageMonthlyTotal:4994.08});
-            var contact1 = contactRepo.save({organizationId: org.id, name: 'Hannah Krog', address: 'Flintevej 3, 9400 Nørrresundby', countryCode: 'DK', number: '1', phone: '+45 12 34 56 78', email: 'hannah@mail.dk', companyNumber: null, paymentTermsDays: 8, archived: false, defaultRouteId: route1.id});
-            var contact2 = contactRepo.save({organizationId: org.id, name: 'Michael Krog', address: 'Flintevej 3, 9400 Nørrresundby', countryCode: 'DK', number: '1', phone: '+45 12 34 56 78', email: 'hannah@mail.dk', companyNumber: null, paymentTermsDays: 8, archived: false, defaultRouteId: route1.id});
-            var contact3 = contactRepo.save({organizationId: org.id, name: 'Otto Sørensen', address: 'Flintevej 3, 9400 Nørrresundby', countryCode: 'DK', number: '1', phone: '+45 12 34 56 78', email: 'hannah@mail.dk', companyNumber: null, paymentTermsDays: 8, archived: false, defaultRouteId: route1.id});
-            var contact4 = contactRepo.save({organizationId: org.id, name: 'Silas Carlsen', address: 'Flintevej 3, 9800 Hjørring', countryCode: 'DK', number: '1', phone: '+45 12 34 56 78', email: 'hannah@mail.dk', companyNumber: null, paymentTermsDays: 8, archived: false, defaultRouteId: route2.id});
-            var productAccount= accountRepo.save({organizationId: org.id, name:'Salg', currency: 'DKK', description: 'Alt salg der vedrører normal forretningsmæssig aktivitet.', accountNo: null});
-            var cashAccount= accountRepo.save({organizationId: org.id, name:'Kasse', currency: 'DKK', description: 'Kontant beholdning', accountNo: null});
-            var product = productRepo.save({organizationId: org.id, name: 'Vinduespolering', description: '', accountId: productAccount.id, archived:false});
-            var invoice1 = invoiceRepo.save({organizationId: org.id, type: 'invoice', number: '2002', contactId: contact1.id, notes: '', date: '2015-01-01', dueDate: '2015-01-08', paymentTermsDays: 7, creditInvoiceId: null, state: 'draft', lines: [{description: '', productId: null, quantity: 1, unitPrice: 100.00, tax: 25.0}]});
-            var payment1 = paymentRepo.save({organizationId: org.id, amount:125.0, currency:'DKK', accountId: cashAccount.id});
-            var agreement1 = intervalAgreementRepo.save({organizationId: org.id, description: 'Eksternt glas', amount: 100, productId: product.id, contactId: contact1.id, recurrence: 'FREQ=WEEKLY;INTERVAL=2', dateStart: '2015-01-01', dateEnd: null, archived: false});
-            var agreement2 = intervalAgreementRepo.save({organizationId: org.id, description: 'Internt glas', amount: 200, productId: product.id, contactId: contact1.id, recurrence: 'FREQ=WEEKLY;INTERVAL=4', dateStart: '2015-01-01', dateEnd: null, archived: false});
-            var agreement3 = intervalAgreementRepo.save({organizationId: org.id, description: 'Eksternt glas', amount: 150, productId: product.id, contactId: contact2.id, recurrence: 'FREQ=WEEKLY;INTERVAL=2', dateStart: '2015-01-01', dateEnd: null, archived: false});
-            var agreement4 = intervalAgreementRepo.save({organizationId: org.id, description: 'Eksternt glas', amount: 150, productId: product.id, contactId: contact3.id, recurrence: 'FREQ=WEEKLY;INTERVAL=2', dateStart: '2015-01-01', dateEnd: null, archived: false});
-            var agreement5 = intervalAgreementRepo.save({organizationId: org.id, description: 'Eksternt glas', amount: 150, productId: product.id, contactId: contact4.id, recurrence: 'FREQ=WEEKLY;INTERVAL=2', dateStart: '2015-01-01', dateEnd: null, archived: false});
+            var logBookRepo = Repository(OrgEntityFilter);
+            var logBookEntryRepo = Repository(OrgEntityFilter);
             
-            var buildPlan = function(orgId) {
-                var agreements = intervalAgreementRepo.query({organizationId:orgId});
-                var entries = [];
-                var i,e;
-                for(i=0;i<agreements.length;i++) {
-                    var agreement = agreements[i];
-                    var entry = null;
-                    var contact = contactRepo.get(agreement.contactId);
-                    
-                    for(e=0;e<entries.length;e++) {
-                        var route = routeRepo.get(entries[e].routeId);
-                        if(route.id === contact.defaultRouteId && agreement.nextInterval === entries[e].date) {
-                            entry = entries[e];
-                        }
-                    }
-                    
-                    if(entry === null) {
-                        var route = routeRepo.get(contact.defaultRouteId);
-                        entry = {
-                            routeId: route.id,
-                            routeName: route.name,
-                            agreements: [],
-                            total: 0,
-                            date: agreement.nextInterval
-                        };
-                        entries.push(entry);
-                    }
-                    
-                    entry.agreements.push(agreement);
-                    entry.total += agreement.amount;
-                    
-                }
-                return entries;
-            }
+            var org = orgRepo.save({name:'Apaq',url:'http://apaq.dk', address:'Bornholmsgade 57, 9000 Aalborg', countryCode: 'DK', phone:'+4593100718', email:'info@apaq.dk', companyNo: '12345678', terminated:false, terminationTime: null, emailValidated: true})
+            var person = personRepo.save({name: 'Michael Krog', address: 'Bornholmsgade 57, 9000 Aalborg', countryCode: 'DK', phone:'+4593100718', email:'mic@apaq.dk', archived: false, username:'michael.krog', password:'test', role:'user', emailValidated: true});
+            var contact1 = contactRepo.save({organizationId: org.id, name: 'Hannah Krog', address: 'Flintevej 3, 9400 Nørrresundby', countryCode: 'DK', number: '1', phone: '+45 12 34 56 78', email: 'hannah@mail.dk', companyNumber: null, paymentTermsDays: 8, archived: false});
+            var contact2 = contactRepo.save({organizationId: org.id, name: 'Michael Krog', address: 'Flintevej 3, 9400 Nørrresundby', countryCode: 'DK', number: '1', phone: '+45 12 34 56 78', email: 'hannah@mail.dk', companyNumber: null, paymentTermsDays: 8, archived: false});
+            var contact3 = contactRepo.save({organizationId: org.id, name: 'Otto Sørensen', address: 'Flintevej 3, 9400 Nørrresundby', countryCode: 'DK', number: '1', phone: '+45 12 34 56 78', email: 'hannah@mail.dk', companyNumber: null, paymentTermsDays: 8, archived: false});
+            var contact4 = contactRepo.save({organizationId: org.id, name: 'Silas Carlsen', address: 'Flintevej 3, 9800 Hjørring', countryCode: 'DK', number: '1', phone: '+45 12 34 56 78', email: 'hannah@mail.dk', companyNumber: null, paymentTermsDays: 8, archived: false});
+            var logbook = logBookRepo.save({organizationId: org.id, vehicle: 'VW Transporter', registration: 'lg 13 351'});
             
             $httpBackend.whenGET(/organizations/).respond(function (method, url, data) {
                 return [200, orgRepo.query()];
@@ -160,24 +109,29 @@ angular.module('skveege.mock', ['ngMockE2E'])
                 return [200, contactRepo.query({organizationId:orgId})];
             });
             
-            $httpBackend.whenGET(/routes\/(\d+)/).respond(function (method, url, data) {
-                var searchResult = url.match(/routes\/(\d+)/);
+            $httpBackend.whenGET(/persons\/(\w+)/).respond(function (method, url, data) {
+                var searchResult = url.match(/persons\/(\w+)/);
                 var id = searchResult[1];
-                return [200, routeRepo.get(id)];
+                
+                if(id === 'current') {
+                    return [200, personRepo.query()[0]];
+                } else {
+                    return [200, personRepo.get(id)];
+                }
             });
             
-            $httpBackend.whenGET(/^\/routes\?organizationId=(\d+)$/).respond(function (method, url, data) {
+            $httpBackend.whenGET(/logBooks/).respond(function (method, url, data) {
                 var searchResult = url.match(/\?organizationId=(\d+)/);
                 var orgId = searchResult[1];
-                return [200, routeRepo.query({organizationId:orgId})];
+                return [200, logBookRepo.query({organizationId:orgId})];
             });
-
-            $httpBackend.whenGET(/^\/plan\?organizationId=(\d+)$/).respond(function (method, url, data) {
-                var searchResult = url.match(/\?organizationId=(\d+)/);
-                var orgId = searchResult[1];
-                return [200, buildPlan(orgId)];
+            
+            $httpBackend.whenPOST(/logBooks/).respond(function (method, url, data) {
+                var logbook = angular.fromJson(data);
+                logbook = logBookRepo.save(logbook);
+                return [200, logbook];
             });
-
-
+            
+            
             $httpBackend.whenGET(/^templates\//).passThrough();
         });

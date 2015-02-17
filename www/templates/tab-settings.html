@@ -1,39 +1,29 @@
-<ion-view>
+<ion-view view-title="Indstillinger>"
     <ion-content>
-        <div class="list">
-            <!--div class="item">
-                <span class="item-note">
-                    3.443kr
-                </span>
-                <h2>Vodskov</h2>
-                <p><span class="assertive"><i class="icon ion-ios7-timer-outline"></i>&nbsp;3 dage siden</span></p>
-            </div>
-            <div class="item">
-                <span class="item-note">
-                    2.746kr
-                </span>
-                <h2>Hjørring</h2>
-                <p><span class="balanced"><i class="icon ion-ios7-timer-outline"></i>&nbsp;i dag</span></p>
-            </div>
-
-            <div class="item">
-                <span class="item-note">
-                    3.435kr
-                </span>
-                <h2>Nørresundby</h2>
-                <p><span class="balanced"><i class="icon ion-ios7-timer-outline"></i>&nbsp;2 dage</span></p>
-
-            </div>
-
-            <div class="item">
-                <span class="item-note">
-                    1.945kr
-                </span>
-                <h2>Støvring</h2>
-                <p><span class="positive"><i class="icon ion-ios7-timer-outline"></i>&nbsp;8 dage</span></p>
-                
-            </div-->
+        <div class="list" href="/tab/settings/profile">
+            <a class="item">
+                <h2>Din profil</h2>
+                <p>{{context.user.name}}, {{context.user.address}}</p>
+            </a>
+            <!--label class="item item-input item-stacked-label">
+                <span class="input-label">Navn</span>
+                <input type="text" placeholder="Dit navn">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Telefonnummer</span>
+                <input type="text" placeholder="+45">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input type="text" placeholder="Din emailadresse">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Adresse</span>
+                <input type="text" placeholder="F.eks.: Ågade 1, 4000 Roskilde">
+            </label-->
+            
 
         </div>
+        <button class="button button-block button-assertive">Log ud</button>
     </ion-content>
 </ion-view>

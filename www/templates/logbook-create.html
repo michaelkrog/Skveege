@@ -1,0 +1,29 @@
+<ion-modal-view>
+    <ion-header-bar class="bar-calm">
+        <div class="buttons">
+            <button class="button button-clear" ng-click="cancelAddLogbook()">Annuller</button>
+        </div>
+      <h1 class="title">Ny kørebog</h1>
+      <div class="buttons">
+            <button class="button button-clear" ng-click="doAddLogbook(newLogbook)">OK</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+      <form name="entityForm" novalidate>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Køretøj</span>
+                <input type="text" placeholder="F.eks. VW Transporter" ng-model="newLogbook.vehicle" required ng-pattern="/[a-zA-Z0-9]{2}/">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Registeringsnummer</span>
+                <input type="text" placeholder="F.eks. 'RF 13 456'" ng-model="newLogbook.registration">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Kilometer</span>
+                <input type="number" placeholder="Antal kilometer bilen pt. har kørt" ng-model="newLogbook.kilometers">
+            </label>
+        </form>
+
+    </ion-content>
+  </ion-modal-view>
+
