@@ -29,6 +29,8 @@ angular.module('skveege.controllers', [])
                 $scope.mode = 'login';
                 LoginSvc.authenticate(credentials.username, credentials.password, true).then(function () {
                     $scope.mode = 'idle';
+                }, function() {
+                    $scope.mode = 'idle';
                 });
 
             };

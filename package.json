@@ -17,5 +17,6 @@
   "cordovaPlugins": [
     "org.apache.cordova.geolocation",
     "https://github.com/christocracy/cordova-plugin-background-geolocation.git"
-  ]
+  ],
+  "cordovaPlatforms": []
 }

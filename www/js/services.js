@@ -1,5 +1,5 @@
 angular.module('skveege.services', [])
-        .factory('LoginSvc', function (localStorageService, $http, $rootScope, $log, skveegeServiceUrl) {
+        .factory('LoginSvc', function (localStorageService, $http, $rootScope, $log, skveegeServiceUrl, $q) {
             var currentUser = null;
             return {
                 authenticate: function (username, password, remember) {
@@ -22,17 +22,7 @@ angular.module('skveege.services', [])
                     }
                     return $http.get(skveegeServiceUrl + '/accounts/current', {
                         headers: headers
-                    }).then(function (response) {
-
-                        if (response.status !== 200) {
-                            var reason = response.data;
-                            if (!reason || '' === reason) {
-                                reason = 'Unable to communicate with server';
-                            }
-                            localStorageService.remove('LoginToken');
-                            console.info('Unable to authenticate: ' + reason.message);
-                            return $q.reject('Unable to authenticate. Reason: ' + reason.message);
-                        }
+                    }).success(function (data) {
 
                         if (remember) {
                             localStorageService.add('LoginToken', token);
@@ -42,7 +32,7 @@ angular.module('skveege.services', [])
                             username: username,
                             password: password
                         };
-                        user = response.data;
+                        user = data;
 
                         $log.info('Authenticated. Returning user.');
                         $http.defaults.headers.common.Authorization = authHeader;
@@ -51,6 +41,16 @@ angular.module('skveege.services', [])
                         currentUser = user;
                         $rootScope.$broadcast("login", user);
                         return user;
+                    }).
+                    error(function(data) {
+                        var reason = data;
+                        if (!reason || '' === reason) {
+                            reason = 'Unable to communicate with server';
+                        }
+                        localStorageService.remove('LoginToken');
+                        $log.info('Unable to authenticate: ' + reason.message);
+                        return $q.reject('Unable to authenticate. Reason: ' + reason.message);
+                        
                     });
 
 

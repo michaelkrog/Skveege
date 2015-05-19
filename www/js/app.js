@@ -7,8 +7,27 @@ angular.module('skveege', [
     'ngCordova',
     'LocalStorageModule'
 ])
-.config(function($provide) {
-            $provide.constant('skveegeServiceUrl', 'http://skveege.test:8084');
+.config(function($provide, $httpProvider) {
+            var serviceUrl = 'http://192.168.87.104:8084';
+            $provide.constant('skveegeServiceUrl', serviceUrl);
+            $httpProvider.interceptors.push(function ($location, $q) {
+                return {
+                    'responseError': function (rejection) {
+                        if(rejection.config.url.substring(0,serviceUrl.length) === serviceUrl) {
+                            if (rejection.status === 401) {
+                                $location.path('/login');
+                                return $q.reject("Not authorized.");
+                            }
+                            if (rejection.status === 0) {
+                                $location.path('/login');
+                                return $q.reject("Cannot contact server.");
+                            }
+                        }
+                        return $q.reject(rejection);
+                    }
+                };
+            });
+
         })
         .run(function ($ionicPlatform, $rootScope, OrganizationSvc, $location) {
             $location.path('/login')
@@ -43,8 +62,9 @@ angular.module('skveege', [
 
         })
 
-        .config(function ($stateProvider, $urlRouterProvider) {
-
+        .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+            $ionicConfigProvider.tabs.position('bottom');
+            $ionicConfigProvider.navBar.alignTitle('center');
             $stateProvider
 
                     .state('login', {
