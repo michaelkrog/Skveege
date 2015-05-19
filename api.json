@@ -12,7 +12,38 @@
     "host": "api.skveege.com",
     "schemes": [
         "https"
-    ],
+    ]
+    ,
+  "tags": [
+    {
+      "name": "organizations",
+      "description": "Information about organizations"
+    },
+    {
+      "name": "users",
+      "description": "Information about users"
+    },
+    {
+      "name": "invoices",
+      "description": "Access to an organization's invoices"
+    },
+    {
+      "name": "agreements",
+      "description": "Access to an organization's agreements"
+    },
+    {
+      "name": "routes",
+      "description": "Access to an organization's routes"
+    },
+    {
+      "name": "payments",
+      "description": "Access to an organization's payments"
+    },
+    {
+      "name": "accounts",
+      "description": "Access to an organization's accounts"
+    }
+  ],
     "consumes": [
         "application/json"
     ],
@@ -21,33 +52,98 @@
     ],
     "paths": {
         "/organizations": {
+            
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["organizations"],
+                "summary": "Retrieves all organizations accessible by current user.",
+                "operationId": "findOrganizations",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset in resultset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "List successfully retrieved and returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/organization"
+                            }
+                        }
                     },
                     "default": {
-                        "description": "unexpected error"
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             },
             "post": {
-                "summary": "Creates a new domain",
+                "tags":["organizations"],
+                "summary": "Creates a new organization",
+                "operationId": "addOrganization",
+                "parameters": [
+                    {
+                        "name": "organization",
+                        "in": "body",
+                        "description": "Organization to add to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/organization"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "Returns the newly created organization.",
+                        "schema": {
+                            "$ref": "#/definitions/organization"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
-        "/organizations/$id": {
+        "/organizations/{id}": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["organizations"],
+                "summary": "Retrieves the specified organization",
+                "operationId": "findOrganizationById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of organization to fetch",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "organization response",
+                        "schema": {
+                            "$ref": "#/definitions/organization"
+                        }
                     },
                     "default": {
                         "description": "unexpected error"
@@ -55,52 +151,151 @@
                 }
             },
             "put": {
-                "summary": "Creates a new domain",
+                "tags":["organizations"],
+                "summary": "Updates an existing organization",
+                "operationId": "updateOrganizationById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of organization to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "The updated organization",
+                        "schema": {
+                            "$ref": "#/definitions/organization"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
-            }
-            ,
+            },
             "delete": {
-                "summary": "Creates a new domain",
+                "tags":["organizations"],
+                "summary": "Deletes an organization",
+                "operationId": "deleteOrganizationById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of organization to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "The newly created domain"
+                    "204": {
+                        "description": "Organization deleted"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
         "/users": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["users"],
+                "summary": "Retrieves all users",
+                "operationId": "findUsers",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset in resultset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "List successfully retrieved and returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/user"
+                            }
+                        }
                     },
                     "default": {
-                        "description": "unexpected error"
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             },
             "post": {
-                "summary": "Creates a new domain",
+                "tags":["users"],
+                "summary": "Creates a new user.",
+                "operationId": "addUser",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "Returns the newly created user.",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
-        "/users/$id": {
+        "/users/{id}": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["users"],
+                "summary": "Retrieves a user.",
+                "operationId": "findUserById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID or username of user to fetch",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "user response",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
                     },
                     "default": {
                         "description": "unexpected error"
@@ -108,52 +303,158 @@
                 }
             },
             "put": {
-                "summary": "Creates a new domain",
+                "tags":["users"],
+                "summary": "Updates a user",
+                "operationId": "updateUserById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "The updated user",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
-            }
-            ,
+            },
             "delete": {
-                "summary": "Creates a new domain",
+                "tags":["users"],
+                "summary": "Deletes a user",
+                "operationId": "deleteUserById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "The newly created domain"
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
         "/invoices": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["invoices"],
+                "summary": "Retrieves all invoices for specified organization.",
+                "operationId": "findInvoices",
+                "parameters": [
+                    {
+                        "name": "organizationId",
+                        "in": "query",
+                        "description": "organization to retrieves invoices for",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset in resultset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "List successfully retrieved and returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/invoice"
+                            }
+                        }
                     },
                     "default": {
-                        "description": "unexpected error"
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             },
             "post": {
-                "summary": "Creates a new domain",
+                "tags":["invoices"],
+                "summary": "Creates a new invoice.",
+                "operationId": "addInvoice",
+                "parameters": [
+                    {
+                        "name": "invoice",
+                        "in": "body",
+                        "description": "Invoice to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/invoice"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "Returns the newly created invoice.",
+                        "schema": {
+                            "$ref": "#/definitions/invoice"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
-        "/invoices/$id": {
+        "/invoices/{id}": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["invoices"],
+                "summary": "Retrieves an invoice.",
+                "operationId": "findInvoiceById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of invoice to fetch",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "invoice response",
+                        "schema": {
+                            "$ref": "#/definitions/invoice"
+                        }
                     },
                     "default": {
                         "description": "unexpected error"
@@ -161,52 +462,158 @@
                 }
             },
             "put": {
-                "summary": "Creates a new domain",
+                "tags":["invoices"],
+                "summary": "Updates an invoice",
+                "operationId": "updateInvoiceById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of invoice to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "The updated invoice",
+                        "schema": {
+                            "$ref": "#/definitions/invoice"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
-            }
-            ,
+            },
             "delete": {
-                "summary": "Creates a new domain",
+                "tags":["invoices"],
+                "summary": "Deletes an invoice",
+                "operationId": "deleteInvoiceById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of invoice to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "The newly created domain"
+                    "204": {
+                        "description": "Invoice deleted"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
         "/payments": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["payments"],
+                "summary": "Retrieves all payments for specified organization.",
+                "operationId": "findPayments",
+                "parameters": [
+                    {
+                        "name": "organizationId",
+                        "in": "query",
+                        "description": "organization to retrieve payments for",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset in resultset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "List successfully retrieved and returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/payment"
+                            }
+                        }
                     },
                     "default": {
-                        "description": "unexpected error"
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             },
             "post": {
-                "summary": "Creates a new domain",
+                "tags":["payments"],
+                "summary": "Creates a new payment.",
+                "operationId": "addPayment",
+                "parameters": [
+                    {
+                        "name": "payment",
+                        "in": "body",
+                        "description": "Payment to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/payment"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "Returns the newly created payment.",
+                        "schema": {
+                            "$ref": "#/definitions/payment"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
-        "/payments/$id": {
+        "/payments/{id}": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["payments"],
+                "summary": "Retrieves a payment.",
+                "operationId": "findPaymentById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of payment to fetch",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "payment response",
+                        "schema": {
+                            "$ref": "#/definitions/payment"
+                        }
                     },
                     "default": {
                         "description": "unexpected error"
@@ -214,52 +621,158 @@
                 }
             },
             "put": {
-                "summary": "Creates a new domain",
+                "tags":["payments"],
+                "summary": "Updates a payment",
+                "operationId": "updatePaymentById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of payment to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "The updated payment",
+                        "schema": {
+                            "$ref": "#/definitions/payment"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
-            }
-            ,
+            },
             "delete": {
-                "summary": "Creates a new domain",
+                "tags":["payments"],
+                "summary": "Deletes aa payment",
+                "operationId": "deletePaymentById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of payment to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "The newly created domain"
+                    "204": {
+                        "description": "Payment deleted"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
         "/contacts": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["contacts"],
+                "summary": "Retrieves all contacts for specified organization.",
+                "operationId": "findContacts",
+                "parameters": [
+                    {
+                        "name": "organizationId",
+                        "in": "query",
+                        "description": "organization to retrieve contacts for",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset in resultset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "List successfully retrieved and returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/contact"
+                            }
+                        }
                     },
                     "default": {
-                        "description": "unexpected error"
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             },
             "post": {
-                "summary": "Creates a new domain",
+                "tags":["contacts"],
+                "summary": "Creates a new contact.",
+                "operationId": "addContact",
+                "parameters": [
+                    {
+                        "name": "contact",
+                        "in": "body",
+                        "description": "Contact to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/contact"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "Returns the newly created contact.",
+                        "schema": {
+                            "$ref": "#/definitions/contact"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
-        "/contacts/$id": {
+        "/contacts/{id}": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["contacts"],
+                "summary": "Retrieves a contact.",
+                "operationId": "findContactById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of contact to fetch",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "contact response",
+                        "schema": {
+                            "$ref": "#/definitions/contact"
+                        }
                     },
                     "default": {
                         "description": "unexpected error"
@@ -267,52 +780,158 @@
                 }
             },
             "put": {
-                "summary": "Creates a new domain",
+                "tags":["contacts"],
+                "summary": "Updates a contact",
+                "operationId": "updateContactById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of contact to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "The updated contact",
+                        "schema": {
+                            "$ref": "#/definitions/contact"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
-            }
-            ,
+            },
             "delete": {
-                "summary": "Creates a new domain",
+                "tags":["contacts"],
+                "summary": "Deletes a contact",
+                "operationId": "deleteContactById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of contact to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "The newly created domain"
+                    "204": {
+                        "description": "Contact deleted"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
         "/agreements": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["agreements"],
+                "summary": "Retrieves all agreements for specified organization.",
+                "operationId": "findAgreements",
+                "parameters": [
+                    {
+                        "name": "organizationId",
+                        "in": "query",
+                        "description": "organization to retrieve agreements for",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset in resultset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "List successfully retrieved and returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/agreement"
+                            }
+                        }
                     },
                     "default": {
-                        "description": "unexpected error"
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             },
             "post": {
-                "summary": "Creates a new domain",
+                "tags":["agreements"],
+                "summary": "Creates a new agreement.",
+                "operationId": "addContact",
+                "parameters": [
+                    {
+                        "name": "contact",
+                        "in": "body",
+                        "description": "Agreement to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/agreement"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "Returns the newly created agreement.",
+                        "schema": {
+                            "$ref": "#/definitions/agreement"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
-        "/agreements/$id": {
+        "/agreements/{id}": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["agreements"],
+                "summary": "Retrieves an agreement.",
+                "operationId": "findAgreementById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of agreement to fetch",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "agreement response",
+                        "schema": {
+                            "$ref": "#/definitions/agreement"
+                        }
                     },
                     "default": {
                         "description": "unexpected error"
@@ -320,52 +939,158 @@
                 }
             },
             "put": {
-                "summary": "Creates a new domain",
+                "tags":["agreements"],
+                "summary": "Updates an agreement",
+                "operationId": "updateAgreementById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of agreement to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "The updated agreement",
+                        "schema": {
+                            "$ref": "#/definitions/agreement"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
-            }
-            ,
+            },
             "delete": {
-                "summary": "Creates a new domain",
+                "tags":["agreements"],
+                "summary": "Deletes an agreement",
+                "operationId": "deleteAgreementById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of agreement to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "The newly created domain"
+                    "204": {
+                        "description": "Agreement deleted"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
         "/routes": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["routes"],
+                "summary": "Retrieves all routes for specified organization.",
+                "operationId": "findRoutes",
+                "parameters": [
+                    {
+                        "name": "organizationId",
+                        "in": "query",
+                        "description": "organization to retrieve routes for",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset in resultset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "List successfully retrieved and returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/route"
+                            }
+                        }
                     },
                     "default": {
-                        "description": "unexpected error"
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             },
             "post": {
-                "summary": "Creates a new domain",
+                "tags":["routes"],
+                "summary": "Creates a new route.",
+                "operationId": "addContact",
+                "parameters": [
+                    {
+                        "name": "route",
+                        "in": "body",
+                        "description": "Route to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "Returns the newly created route.",
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
         },
-        "/routes/$id": {
+        "/routes/{id}": {
             "get": {
-                "summary": "Retrieves all domains accessible by current user.",
+                "tags":["routes"],
+                "summary": "Retrieves a route.",
+                "operationId": "findRouteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of route to fetch",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "domain list response"
+                        "description": "route response",
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
                     },
                     "default": {
                         "description": "unexpected error"
@@ -373,25 +1098,592 @@
                 }
             },
             "put": {
-                "summary": "Creates a new domain",
+                "tags":["routes"],
+                "summary": "Updates a route",
+                "operationId": "updateRouteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of route to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "The newly created domain"
+                        "description": "The updated route",
+                        "schema": {
+                            "$ref": "#/definitions/route"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
-            }
-            ,
+            },
             "delete": {
-                "summary": "Creates a new domain",
+                "tags":["routes"],
+                "summary": "Deletes a route",
+                "operationId": "deleteRouteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of route to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "The newly created domain"
+                    "204": {
+                        "description": "Route deleted"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
                     }
                 }
             }
-
+        },
+        "/accounts": {
+            "get": {
+                "tags":["accounts"],
+                "summary": "Retrieves all accounts for specified organization.",
+                "operationId": "findAccounts",
+                "parameters": [
+                    {
+                        "name": "organizationId",
+                        "in": "query",
+                        "description": "organization to retrieve accounts for",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "offset in resultset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "maximum number of results to return",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List successfully retrieved and returned",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/account"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags":["accounts"],
+                "summary": "Creates a new account.",
+                "operationId": "addAccount",
+                "parameters": [
+                    {
+                        "name": "account",
+                        "in": "body",
+                        "description": "account to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/account"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the newly created account.",
+                        "schema": {
+                            "$ref": "#/definitions/account"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/{id}": {
+            "get": {
+                "tags":["accounts"],
+                "summary": "Retrieves an account.",
+                "operationId": "findAccountById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of account to fetch",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "account response",
+                        "schema": {
+                            "$ref": "#/definitions/account"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            },
+            "put": {
+                "tags":["accounts"],
+                "summary": "Updates an account",
+                "operationId": "updateAccountById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of account to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The updated account",
+                        "schema": {
+                            "$ref": "#/definitions/account"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags":["accounts"],
+                "summary": "Deletes an account",
+                "operationId": "deleteAccountById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of account to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Account deleted"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "organization": {
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "countryCode": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "companyNo": {
+                    "type": "string"
+                },
+                "terminated": {
+                    "type": "boolean"
+                },
+                "terminationTime": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "emailValidated": {
+                    "type": "boolean"
+                },
+                "createdTime": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "trial": {
+                    "type": "boolean"
+                },
+                "subscriptionPrice": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "subscriptionPeriod": {
+                    "type": "string",
+                    "enum": [
+                        "monthly",
+                        "quarterly",
+                        "semiannually",
+                        "annually"
+                    ]
+                },
+                "subscriptionDiscount": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "subscriptionExpires": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "baseCurrency": {
+                    "type": "string"
+                },
+                "locked": {
+                    "type": "boolean"
+                },
+                "hasVat": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "user": {
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "countryCode": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "archived": {
+                    "type": "boolean"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "emailValidated": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "route": {
+            "required": [
+                "name",
+                "organizationId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "averageIntervalIncome": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "averageMonthlyIncome": {
+                    "type": "number",
+                    "format": "float"
+                }
+            }
+        },
+        "contact": {
+            "required": [
+                "organizationId",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "countryCode": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "companyNumber": {
+                    "type": "string"
+                },
+                "paymentTermsDays": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "archived": {
+                    "type": "boolean"
+                },
+                "defaultRouteId": {
+                    "type": "string"
+                }
+            }
+        },
+        "payment": {
+            "required": [
+                "organizationId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "amount": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "accountId": {
+                    "type": "string"
+                }
+            }
+        },
+        "invoice": {
+            "required": [
+                "organizationId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "invoice",
+                        "creditNote"
+                    ]
+                },
+                "number": {
+                    "type": "string"
+                },
+                "contactId": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "dueDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "paymentTermsDays": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "creditInvoicedId": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string",
+                    "enum": [
+                        "draft",
+                        "approved"
+                    ]
+                },
+                "lines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoiceLine"
+                    }
+                }
+            }
+        },
+        "invoiceLine": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "productId": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "unitPrice": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "tax": {
+                    "type": "number",
+                    "format": "float"
+                }
+            }
+        },
+        "agreement": {
+            "required": [
+                "organizationId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "amount": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "productId": {
+                    "type": "string"
+                },
+                "contactId": {
+                    "type": "string"
+                },
+                "recurrence": {
+                    "type": "string"
+                },
+                "dateStart": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "dateEnd": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "archived": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "account": {
+            "required": [
+                "name",
+                "organizationId"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "accountNo": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "errorModel": {
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
         }
     }
 }
-
-

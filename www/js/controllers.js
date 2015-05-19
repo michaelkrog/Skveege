@@ -25,7 +25,7 @@ angular.module('skveege.controllers', [])
 
 
         .controller('ContactListCtrl', function ($scope, ContactSvc, $ionicModal) {
-            $scope.contacts = ContactSvc.query({organizationId: $scope.context.organization.id});
+            $scope.contacts = ContactSvc.query();
             $scope.editable = false;
 
             $ionicModal.fromTemplateUrl('templates/customer-create.html', {
@@ -34,12 +34,19 @@ angular.module('skveege.controllers', [])
             }).then(function (modal) {
                 $scope.modal = modal;
             });
-            $scope.addCustomer = function () {
+            $scope.addContact = function () {
+                $scope.contact = {};
                 $scope.modal.show();
             };
-            $scope.cancelAddCustomer = function () {
+            $scope.cancelAddContact = function () {
                 $scope.modal.hide();
             };
+            
+            $scope.okAddContact = function () {
+                ContactSvc.save($scope.contact)
+                $scope.modal.hide();
+            };
+            
             //Cleanup the modal when we're done with it!
             $scope.$on('$destroy', function () {
                 $scope.modal.remove();
@@ -57,32 +64,29 @@ angular.module('skveege.controllers', [])
 
             $scope.startEdit = function () {
                 $scope.mode = 'edit';
-            }
+            };
+            
+            $scope.endEdit = function () {
+                delete $scope.contact.createdDate;
+                $scope.contact = ContactSvc.save($scope.contact);
+                $scope.mode = 'view';
+            };
         })
 
-        .controller('CustomerTasksCtrl', function ($scope, $stateParams, ContactSvc) {
+        .controller('ContactTasksCtrl', function ($scope, $stateParams, ContactSvc) {
             $scope.contact = ContactSvc.get($stateParams.customerId);
             $scope.context.backTitle = $scope.customer.name;
 
         })
 
-        .controller('LogBooksCtrl', function ($scope, LogBookSvc, $cordovaGeolocation, $ionicModal, GeoSvc) {
+        .controller('LogBooksCtrl', function ($scope, LogBookSvc, $cordovaGeolocation, $ionicModal, GeoSvc, $ionicLoading) {
             $scope.logbook = null;
             $scope.state = null;
             $scope.entries = [];
             $scope.maxStationaryLocationAttempts = 4;
             $scope.maxSpeedAcquistionAttempts = 3;
             $scope.stationaryMillisForValidParking = 10000;
-            $scope.currentTrip = {
-                isMoving: false,
-                lastMovement: null,
-                isAcquiringStationaryLocation: false,
-                stationaryLocation: null,
-                locationError: null,
-                locationAcquisitionAttempts: 0,
-                isParked: true,
-                locations: []
-            };
+
 
             $scope.$on('$ionicView.beforeEnter', function () {
                 $scope.state = 'loading';
@@ -124,21 +128,35 @@ angular.module('skveege.controllers', [])
                 $scope.modal.remove();
             });
 
-            $scope.getLengthOfCurrentTrip = function() {
-                var length = 0, i;
+            $scope.resetCurrentTrip = function (location) {
+                $scope.currentTrip = {
+                    isMoving: false,
+                    lastMovement: null,
+                    isAcquiringStationaryLocation: false,
+                    stationaryLocation: location !== undefined ? location : null,
+                    locationError: null,
+                    locationAcquisitionAttempts: 0,
+                    isParked: true,
+                    locations: []
+                };
                 
-                if($scope.currentTrip.locations.length>1) {
-                    for(i=1;i<$scope.currentTrip.locations.length;i++) {
-                        length += $scope.getDistanceFromLatLonInKm($scope.currentTrip.locations[i-1].coords, $scope.currentTrip.locations[i].coords);
+            };
+
+            $scope.getLengthOfCurrentTrip = function () {
+                var length = 0, i;
+
+                if ($scope.currentTrip.locations.length > 1) {
+                    for (i = 1; i < $scope.currentTrip.locations.length; i++) {
+                        length += $scope.getDistanceFromLatLonInKm($scope.currentTrip.locations[i - 1].coords, $scope.currentTrip.locations[i].coords);
                     }
                 }
                 return length;
             };
-            
-            $scope.getKmPerHourFromMeterPerSecond = function(mps) {
+
+            $scope.getKmPerHourFromMeterPerSecond = function (mps) {
                 return mps * 3600 / 1000;
             };
-            
+
             $scope.getDistanceFromLatLonInKm = function (coords1, coords2) {
                 var R = 6371; // Radius of the earth in km
                 var dLat = $scope.deg2rad(coords2.latitude - coords1.latitude);  // deg2rad below
@@ -168,21 +186,21 @@ angular.module('skveege.controllers', [])
                 $scope.currentTrip.locationError = null;
                 $scope.currentTrip.location = location;
                 $scope.currentTrip.isMoving = location.coords.speed !== null && location.coords.speed > 0;
-                
-                if($scope.currentTrip.isMoving) {
+
+                if ($scope.currentTrip.isMoving) {
                     $scope.currentTrip.lastMovement = location.timestamp;
                 }
-                
-                if($scope.currentTrip.isMoving && !$scope.currentTrip.isParked && !$scope.currentTrip.isAcquiringStationaryLocation) {
+
+                if ($scope.currentTrip.isMoving && !$scope.currentTrip.isParked && !$scope.currentTrip.isAcquiringStationaryLocation) {
                     $scope.currentTrip.locations.push(location);
                 }
 
                 // If we are parked but moving with a speed of 20Km+ more than 0.1Km from our parking lot, then we are not parked anymore.
                 if ($scope.currentTrip.isMoving && $scope.currentTrip.isParked &&
-                        $scope.getKmPerHourFromMeterPerSecond(location.coords.speed) > 20 && 
+                        $scope.getKmPerHourFromMeterPerSecond(location.coords.speed) > 20 &&
                         ($scope.currentTrip.stationaryLocation === null || $scope.getDistanceFromLatLonInKm($scope.currentTrip.location.coords, $scope.currentTrip.stationaryLocation.coords) > 0.1)) {
                     $scope.currentTrip.isParked = false;
-                    if($scope.currentTrip.stationaryLocation) {
+                    if ($scope.currentTrip.stationaryLocation) {
                         $scope.currentTrip.locations = [$scope.currentTrip.stationaryLocation];
                         $scope.currentTrip.stationaryLocation = null;
                     }
@@ -193,12 +211,12 @@ angular.module('skveege.controllers', [])
                     $scope.currentTrip.isAcquiringStationaryLocation = true;
                     $scope.currentTrip.locationAcquisitionAttempts = 0;
                 }
-                
+
                 // If we have a stationary location and enough time has passed then we must be parked.
-                if($scope.currentTrip.stationaryLocation && now.getTime() - $scope.currentTrip.lastMovement > $scope.stationaryMillisForValidParking) {
+                if ($scope.currentTrip.stationaryLocation && now.getTime() - $scope.currentTrip.lastMovement > $scope.stationaryMillisForValidParking) {
                     $scope.currentTrip.isParked = true;
                 }
-                
+
 
                 // test the age of the location measurement to determine if the measurement is cached
                 // in most cases you will not want to rely on cached measurements
@@ -253,20 +271,39 @@ angular.module('skveege.controllers', [])
 
             $scope.$watch('logbook.$active', function (active) {
                 if (active) {
-                    var watchOptions = {
-                        maximumAge: 10000,
-                        timeout: 60000,
-                        enableHighAccuracy: false // may cause errors if true
-                    };
+                    $ionicLoading.show({
+                        template: 'Henter GPS lokation...',
+                        delay: 250
+                    });
 
-                    $scope.watch = $cordovaGeolocation.watchPosition(watchOptions);
-                    $scope.watch.then(
-                            null,
-                            function (err) {
-                                console.log(err);
-                                $scope.currentTrip.locationError = err;
-                            },
-                            $scope.onNewPosition);
+                    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+                    $cordovaGeolocation.getCurrentPosition(posOptions)
+                            .then(function (location) {
+                                $ionicLoading.hide();
+                                $scope.resetCurrentTrip(location);
+                                
+                                var watchOptions = {
+                                    maximumAge: 10000,
+                                    timeout: 60000,
+                                    enableHighAccuracy: false // may cause errors if true
+                                };
+
+                                $scope.watch = $cordovaGeolocation.watchPosition(watchOptions);
+                                $scope.watch.then(
+                                        null,
+                                        function (err) {
+                                            console.log(err);
+                                            $scope.currentTrip.locationError = err;
+                                            $scope.logbook.$active = false;
+                                        },
+                                        $scope.onNewPosition);
+                            }, function (err) {
+                                // error
+                                $ionicLoading.hide();
+                                $scope.logbook.$active = false;
+                            });
+
+
                 } else {
                     if ($scope.watch) {
                         $scope.watch.clearWatch();
@@ -274,6 +311,7 @@ angular.module('skveege.controllers', [])
                 }
             });
 
+            $scope.resetCurrentTrip();
 
         })
         .controller('SettingsCtrl', function ($scope) {

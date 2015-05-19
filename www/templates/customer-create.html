@@ -1,11 +1,11 @@
 <ion-modal-view>
     <ion-header-bar class="bar-calm">
         <div class="buttons">
-            <button class="button button-clear" ng-click="cancelAddCustomer()">Annuller</button>
+            <button class="button button-clear" ng-click="cancelAddContact()">Annuller</button>
         </div>
       <h1 class="title">Ny kunde</h1>
       <div class="buttons">
-            <button class="button button-clear">OK</button>
+            <button class="button button-clear" ng-click="okAddContact(contact)">OK</button>
         </div>
     </ion-header-bar>
     <ion-content>
@@ -31,26 +31,7 @@
                 </label>
 
             </div>
-          
-          <div class="list padding-top">
-                <div class="item item-divider">Arbejde</div>
-                <a class="item item-icon-right">
-                    <h2>Vinduespolering</h2>
-                    <p>Eksternt glas - hver 4. uge
-                </a>    
-                <label class="item item-input">
-                    <span class="input-label positive" align="right">Telefon</span>
-                    <input type="text" ng-model="contact.phone">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label positive" align="right">Email</span>
-                    <input type="email" name="emailAddress" ng-model="contact.email" required>
-                </label>
-                <label class="item item-input">
-                    <span class="input-label positive" align="right">Adresse</span>
-                    <input type="text" ng-model="contact.address">
-                </label>
-            </div>
+
         </form>
 
     </ion-content>
@@ -59,7 +40,7 @@
 <!--ion-modal-view>
     <ion-header-bar align-title="left" class="bar-positive">
         <div class="buttons">
-            <button class="button" ng-click="cancelAddCustomer()">Annuller</button>
+            <button class="button" ng-click="cancelAddContact()">Annuller</button>
         </div>
         <h1 class="title">Ny kunde</h1>
         <div class="buttons">

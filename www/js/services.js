@@ -1,22 +1,30 @@
 angular.module('skveege.services', [])
 
-        .factory('OrganizationSvc', function ($resource) {
-            return $resource('/organizations/:id', {id: '@id'});
+        .factory('OrganizationSvc', function ($resource, skveegeServiceUrl) {
+            return $resource(skveegeServiceUrl + '/organizations/:id', 
+                {id: '@id'},
+                {
+                    getDefault: {method:'GET', url: skveegeServiceUrl + '/organization'} 
+                });
         })
 
-        .factory('ContactSvc', function ($resource) {
-            return $resource('/contacts/:id', {id: '@id'});
+        .factory('ContactSvc', function ($resource, skveegeServiceUrl) {
+            return $resource(skveegeServiceUrl + '/contacts/:id', {id: '@id'});
         })
-        .factory('LogBookSvc', function ($resource) {
-            return $resource('/logBooks/:id', {id: '@id'});
+        .factory('LogBookSvc', function ($resource, skveegeServiceUrl) {
+            return $resource(skveegeServiceUrl + '/logBooks/:id', {id: '@id'});
         })
-        .factory('LogBookEntrySvc', function ($resource) {
-            return $resource('/logBookEntries/:id', {id: '@id'});
+        .factory('LogBookEntrySvc', function ($resource, skveegeServiceUrl) {
+            return $resource(skveegeServiceUrl + '/logBookEntries/:id', {id: '@id'});
         })
-        .factory('PersonSvc', function ($resource) {
-            return $resource('/persons/:id', {id: '@id'});
+        .factory('AccountSvc', function ($resource, skveegeServiceUrl) {
+            return $resource(skveegeServiceUrl + '/account/:id', 
+                {id: '@id'},
+                {
+                    getDefault: {method:'GET', url: skveegeServiceUrl + '/account'} 
+                });
         })
-        .factory('GeoSvc', function ($q) {
+        .factory('GeoSvc', function ($q, skveegeServiceUrl) {
             return {
                 reverseGeocode: function(position) {
                     // 57.0419555,9.9343251
@@ -31,7 +39,7 @@ angular.module('skveege.services', [])
                 }
             }
         })
-        .factory('LoginSvc', function (localStorageService, $http, $rootScope, $log) {
+        .factory('LoginSvc', function (localStorageService, $http, $rootScope, $log, skveegeServiceUrl) {
             var currentUser = null;
             return {
                 authenticate: function (username, password, remember) {
@@ -52,7 +60,7 @@ angular.module('skveege.services', [])
                             'Authorization': authHeader
                         };
                     }
-                    return $http.get('/persons/current', {
+                    return $http.get(skveegeServiceUrl + '/accounts/current', {
                         headers: headers
                     }).then(function (response) {
 

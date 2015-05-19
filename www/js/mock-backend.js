@@ -109,7 +109,7 @@ angular.module('skveege.mock', ['ngMockE2E'])
                 return [200, contactRepo.query({organizationId:orgId})];
             });
             
-            $httpBackend.whenGET(/persons\/(\w+)/).respond(function (method, url, data) {
+            $httpBackend.whenGET(/accounts\/(\w+)/).respond(function (method, url, data) {
                 var searchResult = url.match(/persons\/(\w+)/);
                 var id = searchResult[1];
                 

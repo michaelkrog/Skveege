@@ -2,13 +2,15 @@ angular.module('skveege', [
     'ionic',
     'skveege.controllers',
     'skveege.services',
-    'skveege.mock',
+    //'skveege.mock',
     'ngResource',
     'ngCordova',
     'LocalStorageModule'
 ])
-
-        .run(function ($ionicPlatform, $rootScope, OrganizationSvc, $location, $cordovaGeolocation) {
+        .config(function($provide) {
+            $provide.constant('skveegeServiceUrl', 'http://skveege.test:8084');
+        })
+        .run(function ($ionicPlatform, $rootScope, OrganizationSvc, $location) {
             $location.path('/login')
             $ionicPlatform.ready(function () {
                 // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -28,10 +30,6 @@ angular.module('skveege', [
                     // error
                 });*/
 
-                
-
-
-
             });
 
             $rootScope.context = {};
@@ -42,10 +40,10 @@ angular.module('skveege', [
 
             $rootScope.$on('login', function (event, user) {
                 $rootScope.context.user = user;
-                OrganizationSvc.query().$promise.then(function (data) {
+                OrganizationSvc.getDefault().$promise.then(function (data) {
                     //Lets take the first one for now
-                    if (data.length > 0) {
-                        $rootScope.context.organization = data[0];
+                    if (data) {
+                        $rootScope.context.organization = data;
 
                         $location.path('/tab/customers');
                     }
@@ -96,7 +94,7 @@ angular.module('skveege', [
                         views: {
                             'tab-customers': {
                                 templateUrl: 'templates/customer-tasks.html',
-                                controller: 'CustomerTasksCtrl'
+                                controller: 'ContactTasksCtrl'
                             }
                         }
                     }).state('tab.logbooks', {

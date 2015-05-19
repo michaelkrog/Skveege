@@ -1,7 +1,7 @@
 {
   "name": "skveege",
   "version": "1.0.0",
-  "description": "skveege: An Ionic project",
+  "description": "Skveege: Planning and invoicing for Window Cleaners",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",
