@@ -1,11 +1,11 @@
 angular.module('skveege.controllers', [])
-
-        .controller('PlanCtrl', function ($scope, PlanSvc) {
-            $scope.entries = PlanSvc.query({organizationId: $scope.context.organization.id});
+        
+        .controller('PlanCtrl', function ($scope, TaskSvc) {
+            $scope.entries = TaskSvc.query();
         })
 
         .controller('RoutesCtrl', function ($scope, RouteSvc) {
-            $scope.routes = RouteSvc.query({organizationId: $scope.context.organization.id});
+            $scope.routes = RouteSvc.query();
 
         })
 
@@ -13,23 +13,27 @@ angular.module('skveege.controllers', [])
             $scope.route = RouteSvc.get({id: $stateParams.routeId});
         })
 
-        .controller('LoginCtrl', function ($scope, $timeout) {
+        .controller('LoginCtrl', function ($scope, LoginSvc) {
             $scope.mode = 'idle';
 
-            $scope.signIn = function (user) {
+            $scope.signIn = function (credentials) {
                 if ($scope.mode !== 'idle') {
                     return;
                 }
+
+                if (!credentials) {
+                    alert("Indtast brugernavn og password.");
+                    return;
+                }
+
                 $scope.mode = 'login';
-                $timeout(function () {
-                    $scope.$emit('Login');
+                LoginSvc.authenticate(credentials.username, credentials.password, true).then(function () {
                     $scope.mode = 'idle';
-                }, 1000);
+                });
+
             };
 
         })
-
-
 
         .controller('ContactListCtrl', function ($scope, ContactSvc, $ionicModal) {
             $scope.contacts = ContactSvc.query({organizationId: $scope.context.organization.id});
@@ -41,12 +45,18 @@ angular.module('skveege.controllers', [])
             }).then(function (modal) {
                 $scope.modal = modal;
             });
-            $scope.addCustomer = function () {
+            $scope.addContact = function () {
                 $scope.modal.show();
             };
-            $scope.cancelAddCustomer = function () {
+            $scope.cancelAddContact = function () {
                 $scope.modal.hide();
             };
+            
+            $scope.okAddContact = function () {
+                ContactSvc.save($scope.contact)
+                $scope.modal.hide();
+            };
+            
             //Cleanup the modal when we're done with it!
             $scope.$on('$destroy', function () {
                 $scope.modal.remove();
@@ -64,12 +74,31 @@ angular.module('skveege.controllers', [])
 
             $scope.startEdit = function () {
                 $scope.mode = 'edit';
-            }
+                $scope.editContact = angular.copy($scope.contact);
+            };
+            
+            $scope.endEdit = function () {
+                if(!angular.equals($scope.editContact, $scope.contact)) {
+                    delete $scope.editContact.createdDate;
+                    ContactSvc.save($scope.editContact).$promise.then(function(data) {
+                        $scope.contact = data;
+                    });
+                }
+                $scope.mode = 'view';
+            };
         })
 
-        .controller('CustomerTasksCtrl', function ($scope, $stateParams, ContactSvc) {
-            $scope.contact = ContactSvc.get($stateParams.customerId);
-            $scope.context.backTitle = $scope.customer.name;
+        .controller('ContactTasksCtrl', function ($scope, $stateParams, ContactSvc) {
+            $scope.prevBackTitle = $scope.context.backTitle;
+            ContactSvc.get({id:$stateParams.customerId}).$promise.then(function(contact) {
+                $scope.contact = contact;
+                $scope.context.backTitle = $scope.contact.name;
+            });
+            
+            $scope.$on('$destroy', function () {
+                $scope.context.backTitle = $scope.prevBackTitle;
+            });
+            
 
         })
 
